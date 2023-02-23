@@ -20,10 +20,12 @@ class FormData(db.Model):
     id = db.Column(db.String(36), primary_key=True)
     rating = db.Column(db.Float())
 
+# todo update this when we implement a domain name
+# todo set this up with proper ids and make it in a more printable format -- using PIL?
 @app.route('/')
 def generate_qr_code():
     unique_id = str(uuid.uuid4())
-    url = f'http://127.0.0.1:5000/form?id={unique_id}'
+    url = f'http://http://137.184.35.65:81//form?id={unique_id}'
     qr = qrcode.QRCode(version=1, box_size=10, border=5)
     qr.add_data(url)
     qr.make(fit=True)
