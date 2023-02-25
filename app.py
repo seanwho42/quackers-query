@@ -14,11 +14,24 @@ app.config['SQLALCHEMY_DATABASE_URI'] =\
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+class Duck(db.Model):
+    week_num = db.Column(db.Integer)
+    building = db.Column(db.String(36))
+    floor = db.Column(db.String(36))
+    height = db.Column(db.String(36))
+    rep_number = db.Column(db.Integer)
+    duck_id = db.Column(db.String(36), primary_key=True)
+    date_up = db.Column(db.DateTime)  # date placed
+    date_down = db.Column(db.DateTime)  # date
+    duration = db.Column(db.Interval)  # time interval duck was up.. include or calculate later?
 
 class Response(db.Model):
     response_id = db.Column(db.String(36), primary_key=True)
     duck_id = db.Column(db.String(36))
-    rating = db.Column(db.Float()) # todo set restrictions
+    # could be fun to make the rating a sliding scale for input??
+    rating = db.Column(db.Float)  # todo set restrictions for rating range
+    moved = db.Column(db.Boolean)  # did they find the duck where we put it?
+
 
 # todo update this when we implement a domain name
 # todo set this up with proper ids and make it in a more printable format -- using PIL?
@@ -30,7 +43,7 @@ def generate_qr_code(duck_id):
     qr.add_data(url)
     qr.make(fit=True)
     img = qr.make_image(fill_color="black", back_color="white")
-    img.save(f"qr_code_{duck_id}.png")
+    img.save(f"/qr_codes/qr_code_{duck_id}.png")
     return f'<img src="qr_code_{duck_id}.png" alt="QR code">'
 
 @app.route('/')
@@ -57,6 +70,8 @@ def debug_index():
 @app.route('/form')
 def form():
     duck_id = request.args.get('duck_id')
+    # duck = db.get_or_404(Duck, duck_id)
+    # building, room = duck.building, duck.room
     return f'''
         <form method="POST" action="/submit?id={duck_id}">
             <label>Rating:</label><input type="text" name="rating"><br>
