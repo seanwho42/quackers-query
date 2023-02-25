@@ -63,17 +63,19 @@ def form():
         <form method="POST" action="/submit?duck_id={duck_id}">
             <label>Rating:</label><input type="text" name="rating"><br>
             <label>Did you find the duck in {building} on the {floor} floor?</label>
-            <input type="checkbox" name="moved">
+            <input type="radio" name="moved" id="t_radio" value="T" checked="checked"><label>
+            <label for="t_radio">Yes</label>
+
+            <input type="radio" name="moved" id="f_radio" value="F"><label>
+            <label for="f_radio">No</label>
+
             <br>
             <input type="submit" value="Submit">
         </form>
     '''
-    # <input type="radio" name="moved" id="t_radio" value="T"><label>
-    # <label for="t_radio">Yes</label>
-    #
-    # <input type="radio" name="moved" id="f_radio" value="F"><label>
-    # <label for="f_radio">No</label>
-    #
+
+#             <input type="checkbox" name="moved">
+
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -81,10 +83,11 @@ def submit():
     response_id = str(uuid.uuid4())
     duck_id = request.args.get('duck_id')
     rating = request.form['rating']
-    if request.form['moved'] == 'on':
+    if request.form['moved'] == 'T':
         moved = True
-    else:
+    elif request.form['moved'] == 'F':
         moved = False
+
     form_data = Response(response_id=response_id, duck_id=duck_id, rating=rating, moved=moved)
     db.session.add(form_data)
     db.session.commit()
