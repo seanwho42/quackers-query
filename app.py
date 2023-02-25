@@ -70,14 +70,24 @@ def debug_index():
 @app.route('/form')
 def form():
     duck_id = request.args.get('duck_id')
-    # duck = db.get_or_404(Duck, duck_id)
-    # building, room = duck.building, duck.room
+    duck = db.session.execute(db.select(Duck).where(Duck.duck_id == duck_id)).scalar()
+    building, floor = duck.building, duck.floor
+
     return f'''
-        <form method="POST" action="/submit?id={duck_id}">
+        <form method="POST" action="/submit?duck_id={duck_id}">
             <label>Rating:</label><input type="text" name="rating"><br>
+            <label>Did you find the duck in {building} on the {floor} floor?</label>
+            <input type="checkbox" name="moved">
+            <br>
             <input type="submit" value="Submit">
         </form>
     '''
+    # <input type="radio" name="moved" id="t_radio" value="T"><label>
+    # <label for="t_radio">Yes</label>
+    #
+    # <input type="radio" name="moved" id="f_radio" value="F"><label>
+    # <label for="f_radio">No</label>
+    #
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -85,7 +95,11 @@ def submit():
     response_id = str(uuid.uuid4())
     duck_id = request.args.get('duck_id')
     rating = request.form['rating']
-    form_data = Response(response_id=response_id, duck_id=duck_id, rating=rating)
+    if request.form['moved'] == 'on':
+        moved = True
+    else:
+        moved = False
+    form_data = Response(response_id=response_id, duck_id=duck_id, rating=rating, moved=moved)
     db.session.add(form_data)
     db.session.commit()
     return 'Form submitted successfully!'  # (hopefully)
