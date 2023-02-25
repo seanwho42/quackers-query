@@ -1,4 +1,3 @@
-import qrcode
 import uuid
 import os
 from flask import Flask, render_template, request, url_for, redirect
@@ -32,19 +31,6 @@ class Response(db.Model):
     rating = db.Column(db.Float)  # todo set restrictions for rating range
     moved = db.Column(db.Boolean)  # did they find the duck where we put it?
 
-
-# todo update this when we implement a domain name
-# todo set this up with proper ids and make it in a more printable format -- using PIL?
-# todo move this to its own file since it isn't really --necessarily-- part of the web app
-def generate_qr_code(duck_id):
-    duck_id = str(uuid.uuid4())
-    url = f'http://137.184.35.65:81/form?duck_id={duck_id}'  # todo update
-    qr = qrcode.QRCode(version=1, box_size=10, border=5)
-    qr.add_data(url)
-    qr.make(fit=True)
-    img = qr.make_image(fill_color="black", back_color="white")
-    img.save(f"/qr_codes/qr_code_{duck_id}.png")
-    return f'<img src="qr_code_{duck_id}.png" alt="QR code">'
 
 @app.route('/')
 def debug_index():
