@@ -59,6 +59,9 @@ def form():
     duck = db.session.execute(db.select(Duck).where(Duck.duck_id == duck_id)).scalar()
     building, floor = duck.building, duck.floor
 
+    # todo add in whether or not they took the duck home to the form
+    # todo make this a template instead
+
     return f'''
         <form method="POST" action="/submit?duck_id={duck_id}">
             <label>Rating:</label><input type="text" name="rating"><br>
@@ -94,4 +97,4 @@ def submit():
     return 'Form submitted successfully!'  # (hopefully)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=81)
+    app.run(host='0.0.0.0')
