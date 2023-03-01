@@ -6,7 +6,7 @@ from PIL import ImageDraw
 # todo update this when we implement a domain name
 # todo set this up with proper ids and make it in a more printable format -- using PIL?
 def generate_qr_code(duck_id):
-    url = f'http://137.184.35.65:81/form?duck_id={duck_id}'  # todo update
+    url = f'http://wurubberducks.lol/form?duck_id={duck_id}'  # todo update
     qr = qrcode.QRCode(version=1, box_size=3, border=15)
     qr.add_data(url)
     qr.make(fit=True)
