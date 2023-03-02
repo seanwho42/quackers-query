@@ -60,24 +60,7 @@ def form():
     building, floor = duck.building, duck.floor
 
     # todo add in whether or not they took the duck home to the form
-    # todo make this a template instead
-
-    return f'''
-        <form method="POST" action="/submit?duck_id={duck_id}">
-            <label>Rating:</label><input type="text" name="rating"><br>
-            <label>Did you find the duck in {building} on the {floor} floor?</label>
-            <input type="radio" name="moved" id="t_radio" value="T" checked="checked"><label>
-            <label for="t_radio">Yes</label>
-
-            <input type="radio" name="moved" id="f_radio" value="F"><label>
-            <label for="f_radio">No</label>
-
-            <br>
-            <input type="submit" value="Submit">
-        </form>
-    '''
-
-#             <input type="checkbox" name="moved">
+    return render_template('form.html', duck_id=duck_id, building=building, floor=floor)
 
 
 @app.route('/submit', methods=['POST'])
