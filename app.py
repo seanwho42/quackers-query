@@ -77,7 +77,7 @@ def submit():
     form_data = Response(response_id=response_id, duck_id=duck_id, rating=rating, moved=moved)
     db.session.add(form_data)
     db.session.commit()
-    return 'Form submitted successfully!'  # (hopefully)
+    return render_template('submit.html')  # (hopefully)
 
 @app.route('/response-list')
 def response_list():
