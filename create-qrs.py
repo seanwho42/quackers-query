@@ -7,6 +7,7 @@ from PIL import ImageDraw
 # todo set this up with proper ids and make it in a more printable format -- using PIL?
 def generate_qr_code(duck_id):
     url = f'http://wurubberducks.lol/form?duck_id={duck_id}'  # todo update
+    # 15 border is arbitrary, but ultimately specifies the gap between qr codes
     qr = qrcode.QRCode(version=1, box_size=3, border=15)
     qr.add_data(url)
     qr.make(fit=True)
@@ -22,8 +23,8 @@ template_qr = generate_qr_code('0Eaton1stHigh1')
 
 for row in ducks:
     duck_rows += 1
-    print(duck_rows)
-print(duck_rows)
+    # print(duck_rows)
+# print(duck_rows)
 
 
 def concatenate_qr_codes(duck_data, n_cols):
@@ -36,7 +37,7 @@ def concatenate_qr_codes(duck_data, n_cols):
     temp_qr = generate_qr_code('test_string')
     temp_qr.save('template_qr_code_for_jank.png')
     temp_img = Image.open('template_qr_code_for_jank.png')
-    print(f"temp_img.width = {temp_img.width}")
+    # print(f"temp_img.width = {temp_img.width}")
     canvas = Image.new('RGB', (temp_img.width*n_cols, temp_img.height*(n_rows//n_cols))) #temporarily just made it real big
 
     for duck in duck_data:
@@ -46,7 +47,7 @@ def concatenate_qr_codes(duck_data, n_cols):
         id = duck[5]
         qr_img = generate_qr_code(id)
         qr_img.save(f"./qr_codes/qr_code_{id}.png")
-        print(f'col={col} row={row}')
+        # print(f'col={col} row={row}')
 
         # read the duck qr image because I guess the width of a qr code image isn't the right thing
         # probably would be better if using the qrcode with the pil dependency?
