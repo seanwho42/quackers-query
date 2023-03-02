@@ -1,5 +1,6 @@
 import uuid
 import os
+import datetime
 from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 #from sqlalchemy.sql import select
@@ -34,7 +35,7 @@ class Response(db.Model):
 
 @app.route('/')
 def debug_index():
-    return '<i>Still working on this.. :)</i>'
+    return render_template('index.html')
 
 # def index_info():
 #     sql_stmt = select(FormData)
@@ -97,4 +98,4 @@ def submit():
     return 'Form submitted successfully!'  # (hopefully)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=80)
