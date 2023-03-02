@@ -1,34 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="column is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
+<div class="column is-full-mobile is-one-half-tablet is-three-fifths-desktop is-one-half-widescreen is-one-third-fullhd">
     <form method="POST" action="/submit?duck_id={{ duck_id }}">
-        <div class="field is-mobile">
-            &nbsp;How cool is this duck?
+        <div class="field">
+            How cool is this duck?
             <div class="columns is-mobile">
-                <label class="column is-narrow">&nbsp;uncool</label>
+                <label class="column is-narrow">uncool</label>
                 <input class="column" id="coolness" type="range" name="rating" min="0" max="11" step="0.0001">
-                <label class="column is-narrow" for="coolness">very cool&nbsp;</label><br>
+                <label class="column is-narrow" for="coolness">very cool</label>
             </div>
         </div>
-        <div class="field control is-mobile columns is-mobile">
-            <div class="column">
-                &nbsp;Did you find the duck in {{ building }} on the {{ floor }} floor?
+        <br>
+        <div class="field control field">
+            <div class="columns is-mobile">
+                <div class="column">
+                    Did you find the duck in {{ building }} on the {{ floor }} floor?
+                </div>
+                <div class="column is-narrow">
+                    <label class="radio">
+                        <input class="radio" type="radio" name="moved" id="t_radio" value="T">
+                        Yes
+                    </label>
+                </div>
+                <div class="column is-narrow">
+                    <label class="radio">
+                        <input class="radio" type="radio" name="moved" id="f_radio" value="F"><label>
+                        No
+                    </label>
+                </div>
             </div>
-            <div class="column is-narrow">
-                <label class="radio">
-                    <input class="radio" type="radio" name="moved" id="t_radio" value="T">
-                    Yes
-                </label>
-            </div>
-            <div class="column is-narrow">
-                <label class="radio">
-                    <input class="radio" type="radio" name="moved" id="f_radio" value="F"><label>
-                    No
-                </label>
-            </div>
-            <br>
         </div>
+        <br>
         <input class="button is-primary is-light" type="submit" value="Submit">
     </form>
 </div>
