@@ -3,7 +3,6 @@ import os
 import datetime
 from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
-#from sqlalchemy.sql import select
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -88,14 +87,19 @@ def submit():
     duck_id = request.args.get('duck_id')
     rating = request.form['rating']
     if request.form['moved'] == 'T':
-        moved = True
+        moved = False # if yes, it was found where we put it
     elif request.form['moved'] == 'F':
-        moved = False
+        moved = True # if no, it was found somewhere else
 
     form_data = Response(response_id=response_id, duck_id=duck_id, rating=rating, moved=moved)
     db.session.add(form_data)
     db.session.commit()
     return 'Form submitted successfully!'  # (hopefully)
+
+@app.route('/response-list')
+def response_list():
+    responses = db.session.execute(db.select(Response)).scalars()
+    return render_template('response-list.html', responses=responses)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)

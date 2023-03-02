@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<table>
+  <tr>
+    <th>
+      response_id
+    </th>
+    <th>
+      duck_id
+    </th>
+    <th>
+      rating
+    </th>
+    <th>
+      moved
+    </th>
+  </tr>
+  {% for response in responses %}
+  <tr>
+    <td>
+      {{ response.response_id }}
+    </td>
+    <td>
+      {{ response.duck_id }}
+    </td>
+    <td>
+      {{ response.rating }}
+    </td>
+    <td>
+      {{ response.moved }}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
