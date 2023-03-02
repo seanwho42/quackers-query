@@ -4,12 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.1.96/css/materialdesignicons.min.css">
     <title>Welcome to WU Rubber Ducks!</title>
 </head>
 <body>
+    <nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="/"><span class="mdi mdi-duck mdi-flip-h">&nbsp;</span>WU Rubber Ducks</a></li>
+            <li><a href="https://www.instagram.com/wurubberducks/">@wurubberducks</a></li>
+            <li><a href="https://gofund.me/dfa08205">our gofundme</a></li>
+        </ul>
+    </nav>
     <div class="columns is-centered">
-            {% block content %} {% endblock %}
-        </div>
+        {% block content %} {% endblock %}
     </div>
 </body>
 </html>
