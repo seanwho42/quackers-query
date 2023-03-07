@@ -3,6 +3,7 @@ import os
 import datetime
 from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime, timezone
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -20,8 +21,8 @@ class Duck(db.Model):
     height = db.Column(db.String(36))
     rep_number = db.Column(db.Integer)
     duck_id = db.Column(db.String(36), primary_key=True)
-    date_up = db.Column(db.DateTime)  # date placed
-    date_down = db.Column(db.DateTime)  # date
+    date_up = db.Column(db.DateTime)  # date duck was placed according to the server (seems to be PST?)
+    date_down = db.Column(db.DateTime)  # calculate within the app or deal with later?
     duration = db.Column(db.Interval)  # time interval duck was up.. include or calculate later?
 
 class Response(db.Model):
@@ -29,8 +30,9 @@ class Response(db.Model):
     duck_id = db.Column(db.String(36))
     # could be fun to make the rating a sliding scale for input??
     rating = db.Column(db.Float)  # todo set restrictions for rating range
-    moved = db.Column(db.Boolean)  # did they find the duck where we put it?
-
+    same_pos = db.Column(db.Boolean)  # did they find the duck where we put it?
+    moved = db.Column(db.Boolean)  # did they move the duck?
+    response_time = db.Column(db.DateTime)  # time on the server the response was submitted (seems to be PST?)
 
 @app.route('/')
 def debug_index():
@@ -69,12 +71,21 @@ def submit():
     response_id = str(uuid.uuid4())
     duck_id = request.args.get('duck_id')
     rating = request.form['rating']
+    if request.form['same_pos'] == 'T':
+        same_pos = True
+    elif request.form['same_pos'] == 'F':
+        same_pos = False
     if request.form['moved'] == 'T':
-        moved = False # if yes, it was found where we put it
+        moved = True
     elif request.form['moved'] == 'F':
-        moved = True # if no, it was found somewhere else
-
-    form_data = Response(response_id=response_id, duck_id=duck_id, rating=rating, moved=moved)
+        moved = False
+    response_time = datetime.now()  # seems to be PST? may be different on production server
+    form_data = Response(response_id=response_id,
+                         duck_id=duck_id,
+                         rating=rating,
+                         same_pos=same_pos,
+                         moved=moved,
+                         response_time=response_time)
     db.session.add(form_data)
     db.session.commit()
     return render_template('submit.html')  # (hopefully)
