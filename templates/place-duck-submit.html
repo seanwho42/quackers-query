@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h4>placed ducks:</h4>
+    {% for duck in placed_ducks %}
+        {{ duck.duck_id }}
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="POST" action="/place-duck-submit">
+  <input class="button is-primary is-light" type="submit" value="submit! (when all placed ducks are confirmed)">
+  <div class="table is-hoverable">
+    <div class="columns" style="text-align:left">
+      <div class="column">
+        duck id
+      </div>
+      <div class="column">
+        confirm placement time
+      </div>
+    </div>
+    {% for duck in ducks %}
+    <div class="columns">
+      <div class="column">
+        {{ duck.duck_id }}
+      </div>
+      <div class="column">
+        <input type="checkbox" name="placed_checkbox" value={{ duck.duck_id }}>{{ duck.same_pos }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</form>
+{% endblock %}

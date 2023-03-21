@@ -90,10 +90,30 @@ def submit():
     db.session.commit()
     return render_template('submit.html')  # (hopefully)
 
+
 @app.route('/response-list')
 def response_list():
     responses = db.session.execute(db.select(Response)).scalars()
     return render_template('response-list.html', responses=responses)
+
+@app.route('/place-duck')
+def duck_input():
+    ducks = db.session.execute(db.select(Duck).where(Duck.date_up==None)).scalars()
+    return render_template('place-duck.html', ducks=ducks)
+
+@app.route('/place-duck-submit', methods=['POST'])
+def place_duck_submit():
+    checked = request.form.getlist('placed_checkbox')
+    print(checked)
+    for duck_id in checked:
+        duck = Duck.query.get_or_404(duck_id)
+        duck.date_up = datetime.now()
+
+        db.session.add(duck)
+        db.session.commit()
+
+    return f'placed ducks {checked}<br> <a href="/place-duck">return to duck placement</a>'
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
